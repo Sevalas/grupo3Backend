@@ -1,5 +1,6 @@
 package grupo3.adopcionPF.DTO;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class MascotasDTO {
@@ -9,17 +10,17 @@ public class MascotasDTO {
     private String especie;
     private String raza;
     private int edad;
-    private String infoAdicional;
-    private int fechaDePublicacion;
+    private String requisitos;
+    private Date fechaDePublicacion;
 
-    public MascotasDTO(int idMAscota, String nombre, int cuidador, String especie, String raza, int edad, String infoAdicional, int fechaDePublicacion) {
-        this.idMascota = idMAscota;
+    public MascotasDTO(int idMascota, String nombre, int cuidador, String especie, String raza, int edad, String requisitos, Date fechaDePublicacion) {
+        this.idMascota = idMascota;
         this.nombre = nombre;
         this.cuidador = cuidador;
         this.especie = especie;
         this.raza = raza;
         this.edad = edad;
-        this.infoAdicional = infoAdicional;
+        this.requisitos = requisitos;
         this.fechaDePublicacion = fechaDePublicacion;
     }
 
@@ -71,20 +72,53 @@ public class MascotasDTO {
         this.edad = edad;
     }
 
-    public String getInfoAdicional() {
-        return infoAdicional;
+    public String getRequisitos() {
+        return requisitos;
     }
 
-    public void setInfoAdicional(String infoAdicional) {
-        this.infoAdicional = infoAdicional;
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
     }
 
-    public int getFechaDePublicacion() {
+    public Date getFechaDePublicacion() {
         return fechaDePublicacion;
     }
 
-    public void setFechaDePublicacion(int fechaDePublicacion) {
+    public void setFechaDePublicacion(Date fechaDePublicacion) {
         this.fechaDePublicacion = fechaDePublicacion;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MascotasDTO that = (MascotasDTO) o;
+        return idMascota == that.idMascota &&
+                cuidador == that.cuidador &&
+                edad == that.edad &&
+                nombre.equals(that.nombre) &&
+                especie.equals(that.especie) &&
+                raza.equals(that.raza) &&
+                requisitos.equals(that.requisitos) &&
+                fechaDePublicacion.equals(that.fechaDePublicacion);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idMascota, nombre, cuidador, especie, raza, edad, requisitos, fechaDePublicacion);
+    }
+
+    @Override
+    public String toString() {
+        return "MascotasDTO{" +
+                "idMascota=" + idMascota +
+                ", nombre='" + nombre + '\'' +
+                ", cuidador=" + cuidador +
+                ", especie='" + especie + '\'' +
+                ", raza='" + raza + '\'' +
+                ", edad=" + edad +
+                ", requisitos='" + requisitos + '\'' +
+                ", fechaDePublicacion=" + fechaDePublicacion +
+                '}';
+    }
 }

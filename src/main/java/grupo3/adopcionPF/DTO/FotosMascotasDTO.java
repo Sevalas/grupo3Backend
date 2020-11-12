@@ -1,5 +1,7 @@
 package grupo3.adopcionPF.DTO;
 
+import java.util.Objects;
+
 public class FotosMascotasDTO {
     private int idFotosMascotas;
     private int mascota;
