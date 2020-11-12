@@ -8,9 +8,9 @@ public class PostulacionesDTO {
     private String descripcion;
     private String fotoRefUrl;
     private int mascota;
-    private boolean estado;
+    private String estado;
 
-    public PostulacionesDTO(int idPostulaciones, int usuario, String pregunta1, String pregunta2, String descripcion, String fotoRefUrl, int mascota, boolean estado) {
+    public PostulacionesDTO(int idPostulaciones, int usuario, String pregunta1, String pregunta2, String descripcion, String fotoRefUrl, int mascota, String estado) {
         this.idPostulaciones = idPostulaciones;
         this.usuario = usuario;
         this.pregunta1 = pregunta1;
@@ -25,7 +25,7 @@ public class PostulacionesDTO {
         return idPostulaciones;
     }
 
-    public void setIdPostulaciones(int id) {
+    public void setIdPostulaciones(int idPostulaciones) {
         this.idPostulaciones = idPostulaciones;
     }
 
@@ -77,12 +77,11 @@ public class PostulacionesDTO {
         this.mascota = mascota;
     }
 
-    public boolean isEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(boolean estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
-
 }
