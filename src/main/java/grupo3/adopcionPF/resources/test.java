@@ -2,6 +2,7 @@ package grupo3.adopcionPF.resources;
 
 import grupo3.adopcionPF.DTO.UploadData;
 import grupo3.adopcionPF.DTO.UploadResponse;
+import grupo3.adopcionPF.Interfaces.ImgbbService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api")
 public class test {
-
     ImgbbService service;
     BASE64Encoder base64Encoder = new BASE64Encoder();
 
@@ -27,15 +27,6 @@ public class test {
                 baseUrl("https://api.imgbb.com/1/").addConverterFactory(GsonConverterFactory.create()).build();
 
         service = retrofit.create(ImgbbService.class);
-    }
-
-    public interface ImgbbService {
-        @FormUrlEncoded
-        @POST("upload")
-        Call<UploadResponse> upload(
-                @Query("key") String key,
-                @Field("image") String data
-        );
     }
 
     @RequestMapping(path = "/imagen", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
