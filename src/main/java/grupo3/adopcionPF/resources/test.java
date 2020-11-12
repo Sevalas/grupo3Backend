@@ -1,4 +1,4 @@
-package grupo3.adopcionPF.resource;
+package grupo3.adopcionPF.resources;
 
 import org.springframework.web.bind.annotation.*;
 
