@@ -21,26 +21,11 @@ import java.sql.SQLException;
 
 public class UsuarioApi{
 
-    ImgbbService service;
-    BASE64Encoder base64Encoder = new BASE64Encoder();
-
-    public UsuarioApi() {
-        Retrofit retrofit = new Retrofit.Builder().
-                baseUrl("https://api.imgbb.com/1/").addConverterFactory(GsonConverterFactory.create()).build();
-
-        service = retrofit.create(ImgbbService.class);
-    }
-
     //REGISTRAR USUARIO
     @RequestMapping(method = RequestMethod.POST,value = "/registro/imagen")
     public void registrarNuevoUsuario(@RequestPart("imagen") MultipartFile imagen,@ModelAttribute UsuarioDTO dtoUsuario) throws SQLException, IOException {
-        String img1 = base64Encoder.encode(imagen.getBytes());
-        Response<UploadResponse> response = service.upload("2c9bcf61c8014cee3542685d80ba3a4a",img1).execute();
-        UploadResponse uploadResponse = response.body();
-        UploadData uploadData = uploadResponse.getData();
-        String url = uploadData.getUrl();
 
-        new UsuarioDAO().registrarUsuario(dtoUsuario,url);
+        new UsuarioDAO().registrarUsuario(dtoUsuario,new imgbbAPI().ImgToUrl(imagen));
     }
 
     //ELIMINAR USUARIO

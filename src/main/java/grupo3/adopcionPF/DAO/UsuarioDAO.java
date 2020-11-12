@@ -41,7 +41,7 @@ public class UsuarioDAO {
 
     public void eliminarUsuario(int id) throws SQLException{
         String sqlEliminar = "DELETE FROM grupo3_usuarios " +
-                "WHERE id = ? ";
+                "WHERE SECTION='id';";
         PreparedStatement ps = conectarBD.prepareStatement(sqlEliminar);
         ps.setInt(1,id);
         ps.execute();
