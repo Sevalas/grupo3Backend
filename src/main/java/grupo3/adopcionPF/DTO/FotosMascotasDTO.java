@@ -1,13 +1,5 @@
 package grupo3.adopcionPF.DTO;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
-
-@RestController
-@RequestMapping("/api")
-
 public class FotosMascotasDTO {
     private int idFotosMascotas;
     private int mascota;

@@ -1,4 +1,4 @@
-package grupo3.adopcionPF.dto;
+package grupo3.adopcionPF.DTO;
 
 @lombok.Data
 public class ImgBBRes {
