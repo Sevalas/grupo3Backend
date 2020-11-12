@@ -10,7 +10,7 @@ import java.sql.SQLException;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200")
 
-public class ApiCrud{
+public class ApiUsuario{
 
     //REGISTRAR USUARIO
     @RequestMapping(method = RequestMethod.POST,value = "/registro")

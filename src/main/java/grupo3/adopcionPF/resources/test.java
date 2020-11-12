@@ -1,4 +1,4 @@
-package grupo3.adopcionPF.RESOURCES;
+package grupo3.adopcionPF.resources;
 
 import grupo3.adopcionPF.DTO.UploadData;
 import grupo3.adopcionPF.DTO.UploadResponse;
