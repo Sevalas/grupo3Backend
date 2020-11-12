@@ -1,4 +1,4 @@
-package grupo3.adopcionPF;
+package grupo3.adopcionPF.Conexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
