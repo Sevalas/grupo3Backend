@@ -12,10 +12,21 @@ import java.sql.SQLException;
 
 public class ApiCrud{
 
+    //REGISTRAR USUARIO
     @RequestMapping(method = RequestMethod.POST,value = "/registro")
     public void registrarNuevoUsuario(@RequestBody UsuarioDTO dtoUsuario)throws SQLException{
         new UsuarioDAO().registrarUsuario(dtoUsuario);
     }
+
+    //ELIMINAR USUARIO
+    @RequestMapping(method = RequestMethod.DELETE,value = "/eliminarCuenta/{id}")
+    public  void eliminarUsuario(@PathVariable(name = "id")int id) throws SQLException{
+        new UsuarioDAO().eliminarUsuario(id);
+    }
+
+    
+
+
 
 
 

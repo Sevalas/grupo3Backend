@@ -36,4 +36,16 @@ public class UsuarioDAO {
         ps.execute();
 
     }
+
+    //ELIMINAR USUARIO
+
+    public void eliminarUsuario(int id) throws SQLException{
+        String sqlEliminar = "DELETE FROM grupo3_usuarios " +
+                "WHERE id = ? ";
+        PreparedStatement ps = conectarBD.prepareStatement(sqlEliminar);
+        ps.setInt(1,id);
+        ps.execute();
+    }
+
+
 }
