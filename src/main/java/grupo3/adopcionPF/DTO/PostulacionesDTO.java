@@ -1,7 +1,5 @@
 package grupo3.adopcionPF.DTO;
 
-import java.util.Objects;
-
 public class PostulacionesDTO {
     private int idPostulaciones;
     private int usuario;
