@@ -35,7 +35,7 @@ public class PostulacionesDAO {
         ps.execute();
     }
 
-    public List<PostulacionesDTO> obtenerListaFotoMascotas() throws SQLException {
+    public List<PostulacionesDTO> obtenerListaPostulaciones() throws SQLException {
         sql = "SELECT id,usuario,pregunta1,pregunta2,descripcion,foto_ref_url,mascota,estado " +
                 "FROM grupo3_postulaciones";
         ps = Conn.prepareStatement(sql);
@@ -56,4 +56,100 @@ public class PostulacionesDAO {
         return listaPostulaciones;
     }
 
+    public PostulacionesDTO obtenerPostulacionPorId(int id) throws SQLException {
+        sql = "SELECT id,usuario,pregunta1,pregunta2,descripcion,foto_ref_url,mascota,estado " +
+                "FROM grupo3_postulaciones " +
+                "WHERE id = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            nuevaPostulacion = new PostulacionesDTO(rs.getInt("id"),
+                    rs.getInt("usuario"),
+                    rs.getString("pregunta1"),
+                    rs.getString("pregunta2"),
+                    rs.getString("descripcion"),
+                    rs.getString("foto_ref_url"),
+                    rs.getInt("mascota"),
+                    rs.getString("estado"));
+        }
+        return nuevaPostulacion;
+    }
+
+    public List<PostulacionesDTO> obtenerListaPorUsuario(int idUsuario) throws SQLException {
+        sql = "SELECT id,usuario,pregunta1,pregunta2,descripcion,foto_ref_url,mascota,estado " +
+                "FROM grupo3_postulaciones " +
+                "WHERE usuario = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setInt(1, idUsuario);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            do {
+                nuevaPostulacion = new PostulacionesDTO(rs.getInt("id"),
+                        rs.getInt("usuario"),
+                        rs.getString("pregunta1"),
+                        rs.getString("pregunta2"),
+                        rs.getString("descripcion"),
+                        rs.getString("foto_ref_url"),
+                        rs.getInt("mascota"),
+                        rs.getString("estado"));
+                listaPostulaciones.add(nuevaPostulacion);
+            } while (rs.next());
+        }
+        return listaPostulaciones;
+    }
+
+    public List<PostulacionesDTO> obtenerListaPorMascota(int idMascota) throws SQLException {
+        sql = "SELECT id,usuario,pregunta1,pregunta2,descripcion,foto_ref_url,mascota,estado " +
+                "FROM grupo3_postulaciones " +
+                "WHERE mascota = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setInt(1, idMascota);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            do {
+                nuevaPostulacion = new PostulacionesDTO(rs.getInt("id"),
+                        rs.getInt("usuario"),
+                        rs.getString("pregunta1"),
+                        rs.getString("pregunta2"),
+                        rs.getString("descripcion"),
+                        rs.getString("foto_ref_url"),
+                        rs.getInt("mascota"),
+                        rs.getString("estado"));
+                listaPostulaciones.add(nuevaPostulacion);
+            } while (rs.next());
+        }
+        return listaPostulaciones;
+    }
+
+    public void actualizarPostulacion(PostulacionesDTO postulacion,String foto,int id) throws SQLException {
+        sql = "UPDATE grupo3_postulaciones " +
+                "SET pregunta1=?, pregunta2=?, descripcion=?, foto_ref_url=? " +
+                "WHERE id = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setString(1,postulacion.getPregunta1());
+        ps.setString(2, postulacion.getPregunta2());
+        ps.setString(3, postulacion.getDescripcion());
+        ps.setString(4,foto);
+        ps.setInt(5,id);
+        ps.execute();
+    }
+
+    public void actualizarEstado(Boolean estado,int id) throws SQLException {
+        sql = "UPDATE grupo3_postulaciones " +
+                "SET estado=? " +
+                "WHERE id = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setString(1,estado.toString());
+        ps.setInt(2,id);
+        ps.execute();
+    }
+
+    public void eliminarFotoMascota(int id)throws SQLException {
+        sql = "DELETE FROM grupo3_postulaciones " +
+                "WHERE id = ?";
+        ps = Conn.prepareCall(sql);
+        ps.setInt(1,id);
+        ps.execute();
+    }
 }
