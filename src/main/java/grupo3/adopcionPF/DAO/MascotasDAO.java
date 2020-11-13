@@ -2,7 +2,6 @@ package grupo3.adopcionPF.DAO;
 
 import grupo3.adopcionPF.Conexion.connectionManager;
 import grupo3.adopcionPF.DTO.MascotasDTO;
-import grupo3.adopcionPF.DTO.UsuarioDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,8 +16,8 @@ public class MascotasDAO {
     private PreparedStatement ps;
     private ResultSet rs;
     private String sql;
-    private List<MascotasDAO> listaMascotas = new ArrayList<>();
-    private MascotasDAO nuevoMascota;
+    private List<MascotasDTO> listaMascotas = new ArrayList<>();
+    private MascotasDTO nuevoMascota;
 
     public MascotasDAO() throws SQLException{
         Conn = connectionManager.obtenerConexion();
@@ -36,5 +35,26 @@ public class MascotasDAO {
         ps.setString(6,mascota.getRequisitos());
         ps.setDate(7,mascota.getFechaDePublicacion());
         ps.execute();
+    }
+
+    public List<MascotasDTO> obtenerListaMascotas() throws SQLException {
+        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion " +
+                "FROM grupo3_mascotas";
+        ps = Conn.prepareStatement(sql);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            do {
+                nuevoMascota= new MascotasDTO(rs.getInt("id"),
+                        rs.getString("nombres"),
+                        rs.getInt("cuidador"),
+                        rs.getString("especies"),
+                        rs.getString("raza"),
+                        rs.getInt("edad"),
+                        rs.getString("requisitos"),
+                        rs.getDate("fecha_de_publicacion"));
+                listaMascotas.add(nuevoMascota);
+            } while (rs.next());
+        }
+        return listaMascotas;
     }
 }
