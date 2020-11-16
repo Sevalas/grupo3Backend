@@ -17,11 +17,11 @@ import java.util.List;
 
 public class UsuarioApi {
     public UsuarioApi() {
+        timeOutControl.timeOutControl();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/usuarios")
     public String agregarUsuario(@ModelAttribute UsuarioDTO usuario, @RequestPart MultipartFile imagen) throws SQLException, IOException, AddressException {
-        timeOutControl.timeOutControl();
         if (new UsuarioDAO().obtenerUsuariosPorNickname(usuario.getNickname()) == null) {
             if (new UsuarioDAO().obtenerUsuariosPorEmail(usuario.getEmail()) == null) {
                 new UsuarioDAO().agregarUsuario(usuario, new imgbbAPI().ImgToUrl(imagen));
