@@ -12,7 +12,7 @@ import java.util.List;
 public class MascotasAPI {
 
     @RequestMapping(method = RequestMethod.POST,value = "/mascotas")
-    public void AgregarMascota(@ModelAttribute MascotasDTO mascota) throws SQLException{
+    public void agregarMascota(@ModelAttribute MascotasDTO mascota) throws SQLException{
         new MascotasDAO().agregarMascota(mascota);
     }
 
@@ -27,7 +27,7 @@ public class MascotasAPI {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/mascotas/cuidador={cuidador}")
-    public MascotasDTO obtenerMascotaPorCuidador(@PathVariable(name = "cuidador") int cuidador) throws SQLException {
+    public List<MascotasDTO> obtenerMascotaPorCuidador(@PathVariable(name = "cuidador") int cuidador) throws SQLException {
         return new MascotasDAO().obtenerMascotasPorCuidador(cuidador);
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class FotosMascotaAPI {
 
     @RequestMapping(method = RequestMethod.POST,value = "/fotos_mascota")
-    public void AgregarFotoMascota(@ModelAttribute FotosMascotasDTO fotoMascota, @RequestPart MultipartFile imagen) throws SQLException, IOException {
+    public void agregarFotoMascota(@ModelAttribute FotosMascotasDTO fotoMascota, @RequestPart MultipartFile imagen) throws SQLException, IOException {
         new FotosMascotasDAO().agregarFotosMascotas(fotoMascota,new imgbbAPI().ImgToUrl(imagen));
     }
 

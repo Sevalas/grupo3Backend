@@ -110,6 +110,29 @@ public class UsuarioDAO {
         return nuevoUsuario;
     }
 
+    public UsuarioDTO obtenerUsuariosPorEmail(String email) throws SQLException {
+        sql = "SELECT id,nickname,password,nombres,apellidos,fecha_nacimiento,email,fono,region,comuna,foto_perfil_url " +
+                "FROM grupo3_usuarios " +
+                "WHERE email = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setString(1, email);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            nuevoUsuario= new UsuarioDTO(rs.getInt("id"),
+                    rs.getString("nickname"),
+                    rs.getString("password"),
+                    rs.getString("nombres"),
+                    rs.getString("apellidos"),
+                    rs.getDate("fecha_nacimiento"),
+                    rs.getString("email"),
+                    rs.getInt("fono"),
+                    rs.getString("region"),
+                    rs.getString("comuna"),
+                    rs.getString("foto_perfil_url"));
+        }
+        return nuevoUsuario;
+    }
+
     public void actualizarUsuario(UsuarioDTO usuario,String foto,int id) throws SQLException {
         sql = "UPDATE grupo3_usuarios " +
                 "SET nickname=?,password=?,nombres=?,apellidos=?,fecha_nacimiento=?,email=?,fono=?,region=?,comuna=?,foto_perfil_url=? " +

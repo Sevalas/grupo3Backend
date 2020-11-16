@@ -14,10 +14,12 @@ public class imgbbAPI {
     BASE64Encoder base64Encoder = new BASE64Encoder();
 
     public imgbbAPI() {
+        timeOutControl.timeOutControl();
         Retrofit retrofit = new Retrofit.Builder().
                 baseUrl("https://api.imgbb.com/1/").addConverterFactory(GsonConverterFactory.create()).build();
 
         service = retrofit.create(ImgbbService.class);
+
     }
 
     public String ImgToUrl (MultipartFile img) throws IOException {

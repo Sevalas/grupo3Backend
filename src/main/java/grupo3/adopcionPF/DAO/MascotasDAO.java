@@ -79,7 +79,7 @@ public class MascotasDAO {
         return nuevoMascota;
     }
 
-    public MascotasDTO obtenerMascotasPorCuidador(int cuidador) throws SQLException {
+    public List<MascotasDTO> obtenerMascotasPorCuidador(int cuidador) throws SQLException {
         sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion " +
                 "FROM grupo3_mascotas " +
                 "WHERE cuidador = ?";
@@ -87,16 +87,19 @@ public class MascotasDAO {
         ps.setInt(1, cuidador);
         rs = ps.executeQuery();
         if (rs.next()) {
-            nuevoMascota= new MascotasDTO(rs.getInt("id"),
-                    rs.getString("nombres"),
-                    rs.getInt("cuidador"),
-                    rs.getString("especies"),
-                    rs.getString("raza"),
-                    rs.getInt("edad"),
-                    rs.getString("requisitos"),
-                    rs.getDate("fecha_de_publicacion"));
+            do {
+                nuevoMascota = new MascotasDTO(rs.getInt("id"),
+                        rs.getString("nombres"),
+                        rs.getInt("cuidador"),
+                        rs.getString("especies"),
+                        rs.getString("raza"),
+                        rs.getInt("edad"),
+                        rs.getString("requisitos"),
+                        rs.getDate("fecha_de_publicacion"));
+                listaMascotas.add(nuevoMascota);
+            } while (rs.next());
         }
-        return nuevoMascota;
+        return listaMascotas;
     }
 
     public void actualizarMascotas(MascotasDTO mascota,int id) throws SQLException {

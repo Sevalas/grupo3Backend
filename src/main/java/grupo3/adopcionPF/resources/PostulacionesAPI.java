@@ -14,7 +14,7 @@ import java.util.List;
 public class PostulacionesAPI {
 
     @RequestMapping(method = RequestMethod.POST,value = "/postulaciones")
-    public void AgregarPostulacion(@ModelAttribute PostulacionesDTO postulacion, @RequestPart MultipartFile imagen) throws SQLException, IOException {
+    public void agregarPostulacion(@ModelAttribute PostulacionesDTO postulacion, @RequestPart MultipartFile imagen) throws SQLException, IOException {
         new PostulacionesDAO().agregarPostulacion(postulacion,new imgbbAPI().ImgToUrl(imagen));
     }
 

@@ -5,6 +5,8 @@ import grupo3.adopcionPF.DTO.UsuarioDTO;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -13,11 +15,23 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200")
 
-public class UsuarioApi{
+public class UsuarioApi {
+    public UsuarioApi() {
+    }
 
-    @RequestMapping(method = RequestMethod.POST,value = "/usuarios")
-    public void AgregarUsuario(@ModelAttribute UsuarioDTO usuario, @RequestPart MultipartFile imagen) throws SQLException, IOException {
-        new UsuarioDAO().agregarUsuario(usuario,new imgbbAPI().ImgToUrl(imagen));
+    @RequestMapping(method = RequestMethod.POST, value = "/usuarios")
+    public String agregarUsuario(@ModelAttribute UsuarioDTO usuario, @RequestPart MultipartFile imagen) throws SQLException, IOException, AddressException {
+        timeOutControl.timeOutControl();
+        if (new UsuarioDAO().obtenerUsuariosPorNickname(usuario.getNickname()) == null) {
+            if (new UsuarioDAO().obtenerUsuariosPorEmail(usuario.getEmail()) == null) {
+                new UsuarioDAO().agregarUsuario(usuario, new imgbbAPI().ImgToUrl(imagen));
+                new mailApi().enviarConGMail(new InternetAddress(usuario.getEmail()), "Bienvenido a PetAdopt", "Hola " + usuario.getNickname() + " Muchas Gracias por unirte a nuestra comunidad :D");
+                return "Correo Enviado";
+            }
+            return "Este Correo ya existe";
+        }
+        return "Este Nickname ya existe";
+
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/usuarios")
@@ -31,13 +45,20 @@ public class UsuarioApi{
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/usuarios/nickname={nickname}")
-    public UsuarioDTO obtenerUsuariosPorNickname(@PathVariable(name = "nickname") String nickname) throws SQLException {
+    public UsuarioDTO obtenerUsuariosPorNickname(@PathVariable(name = "nickname") String nickname) throws
+            SQLException {
         return new UsuarioDAO().obtenerUsuariosPorNickname(nickname);
     }
 
-    @RequestMapping(method = RequestMethod.PUT,value = "/usuarios/actualizar={id}")
-    public void actualizarUsuario(@PathVariable("id") int id, @ModelAttribute UsuarioDTO usuario, @RequestPart MultipartFile imagen) throws SQLException, IOException {
-        new UsuarioDAO().actualizarUsuario(usuario,new imgbbAPI().ImgToUrl(imagen),id);
+    @RequestMapping(method = RequestMethod.GET, value = "/usuarios/email={email}")
+    public UsuarioDTO obtenerUsuariosPorEmail(@PathVariable(name = "email") String email) throws SQLException {
+        return new UsuarioDAO().obtenerUsuariosPorEmail(email);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/usuarios/actualizar={id}")
+    public void actualizarUsuario(@PathVariable("id") int id, @ModelAttribute UsuarioDTO usuario,
+                                  @RequestPart MultipartFile imagen) throws SQLException, IOException {
+        new UsuarioDAO().actualizarUsuario(usuario, new imgbbAPI().ImgToUrl(imagen), id);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/usuarios/eliminar={id}")
@@ -45,4 +66,17 @@ public class UsuarioApi{
         new UsuarioDAO().eliminarUsuario(id);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/usuarios/login")
+    public @ResponseBody
+    Boolean loginCredenciales(@RequestParam("nickname") String
+                                      nickname, @RequestParam("password") String password) throws SQLException {
+        UsuarioDTO usuario = new UsuarioDAO().obtenerUsuariosPorNickname(nickname);
+
+        if (usuario == null) {
+            return null;
+        } else if (usuario.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
 }
