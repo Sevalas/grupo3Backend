@@ -6,12 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import sun.misc.BASE64Encoder;
 import java.io.IOException;
+import java.util.Base64;
 
 public class imgbbAPI {
+
     ImgbbService service;
-    BASE64Encoder base64Encoder = new BASE64Encoder();
 
     public imgbbAPI() {
         timeOutControl.timeOutControl();
@@ -23,7 +23,7 @@ public class imgbbAPI {
     }
 
     public String ImgToUrl (MultipartFile img) throws IOException {
-        String imgBase64 = base64Encoder.encode(img.getBytes());
+        String imgBase64 = Base64.getEncoder().encodeToString(img.getBytes());
         Response<UploadResponse> response = service.upload("2c9bcf61c8014cee3542685d80ba3a4a",imgBase64).execute();
         UploadResponse uploadResponse = response.body();
         UploadData uploadData = uploadResponse.getData();
