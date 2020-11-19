@@ -23,7 +23,7 @@ public class UsuarioDAO {
         Conn = connectionManager.obtenerConexion();
     }
 
-    public void agregarUsuario(UsuarioDTO usuario, String foto) throws SQLException {
+    public void agregarUsuario(UsuarioDTO usuario, String image) throws SQLException {
         sql = "INSERT INTO grupo3_usuarios(nickname,password,nombres,apellidos,fecha_nacimiento,email,fono,region,comuna,foto_perfil_url) " +
                 "VALUES(?,?,?,?,?,?,?,?,?,?)";
         ps = Conn.prepareStatement(sql);
@@ -36,7 +36,7 @@ public class UsuarioDAO {
         ps.setInt(7,usuario.getFono());
         ps.setString(8,usuario.getRegion());
         ps.setString(9,usuario.getComuna());
-        ps.setString(10,foto);
+        ps.setString(10,image   );
         ps.execute();
     }
 

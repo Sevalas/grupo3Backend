@@ -20,12 +20,17 @@ public class UsuarioApi {
         timeOutControl.timeOutControl();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/usuarios")
-    public String agregarUsuario(@ModelAttribute UsuarioDTO usuario, @RequestPart MultipartFile imagen) throws SQLException, IOException, AddressException {
+    @RequestMapping(method = RequestMethod.POST, value = "/usuarios/agregar")
+    public String agregarUsuario(@ModelAttribute UsuarioDTO usuario, @RequestPart MultipartFile image) throws SQLException, IOException, AddressException {
+        timeOutControl.timeOutControl();
         if (new UsuarioDAO().obtenerUsuariosPorNickname(usuario.getNickname()) == null) {
             if (new UsuarioDAO().obtenerUsuariosPorEmail(usuario.getEmail()) == null) {
-                new UsuarioDAO().agregarUsuario(usuario, new imgbbAPI().ImgToUrl(imagen));
-                new mailApi().enviarConGMail(new InternetAddress(usuario.getEmail()), "Bienvenido a PetAdopt", "Hola " + usuario.getNickname() + " Muchas Gracias por unirte a nuestra comunidad :D");
+                new UsuarioDAO().agregarUsuario(usuario, new imgbbAPI().ImgToUrl(image));
+                new mailApi().enviarConGMail(new InternetAddress(usuario.getEmail()),
+                        "Bienvenido a PetAdopt",
+                        "Hola " + usuario.getNickname() + " Muchas Gracias por unirte a nuestra comunidad :D\n" +
+                                "Usuario: " + usuario.getNickname() + "\n" +
+                                "Contraseña: " + usuario.getPassword());
                 return "Correo Enviado";
             }
             return "Este Correo ya existe";
