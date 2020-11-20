@@ -33,10 +33,10 @@ public class UsuarioDAO {
         ps.setString(4,usuario.getApellidos());
         ps.setDate(5,usuario.getFechaNacimiento());
         ps.setString(6,usuario.getEmail());
-        ps.setInt(7,usuario.getFono());
+        ps.setInt(7, usuario.getFono());
         ps.setString(8,usuario.getRegion());
         ps.setString(9,usuario.getComuna());
-        ps.setString(10,image   );
+        ps.setString(10,image);
         ps.execute();
     }
 
@@ -116,6 +116,29 @@ public class UsuarioDAO {
                 "WHERE email = ?";
         ps = Conn.prepareStatement(sql);
         ps.setString(1, email);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            nuevoUsuario= new UsuarioDTO(rs.getInt("id"),
+                    rs.getString("nickname"),
+                    rs.getString("password"),
+                    rs.getString("nombres"),
+                    rs.getString("apellidos"),
+                    rs.getDate("fecha_nacimiento"),
+                    rs.getString("email"),
+                    rs.getInt("fono"),
+                    rs.getString("region"),
+                    rs.getString("comuna"),
+                    rs.getString("foto_perfil_url"));
+        }
+        return nuevoUsuario;
+    }
+
+    public UsuarioDTO obtenerUsuariosPorFono(int fono) throws SQLException {
+        sql = "SELECT id,nickname,password,nombres,apellidos,fecha_nacimiento,email,fono,region,comuna,foto_perfil_url " +
+                "FROM grupo3_usuarios " +
+                "WHERE fono = ?";
+        ps = Conn.prepareStatement(sql);
+        ps.setInt(1, fono);
         rs = ps.executeQuery();
         if (rs.next()) {
             nuevoUsuario= new UsuarioDTO(rs.getInt("id"),

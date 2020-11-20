@@ -25,18 +25,20 @@ public class UsuarioApi {
         timeOutControl.timeOutControl();
         if (new UsuarioDAO().obtenerUsuariosPorNickname(usuario.getNickname()) == null) {
             if (new UsuarioDAO().obtenerUsuariosPorEmail(usuario.getEmail()) == null) {
-                new UsuarioDAO().agregarUsuario(usuario, new imgbbAPI().ImgToUrl(image));
-                new mailApi().enviarConGMail(new InternetAddress(usuario.getEmail()),
-                        "Bienvenido a PetAdopt",
-                        "Hola " + usuario.getNickname() + " Muchas Gracias por unirte a nuestra comunidad :D\n" +
-                                "Usuario: " + usuario.getNickname() + "\n" +
-                                "Contraseña: " + usuario.getPassword());
-                return "Correo Enviado";
+                if (new UsuarioDAO().obtenerUsuariosPorFono(usuario.getFono()) == null) {
+                    new UsuarioDAO().agregarUsuario(usuario, new imgbbAPI().ImgToUrl(image));
+                    new mailApi().enviarConGMail(new InternetAddress(usuario.getEmail()),
+                            "Bienvenido a PetAdopt",
+                            "Hola " + usuario.getNickname() + " Muchas Gracias por unirte a nuestra comunidad :D\n" +
+                                    "Usuario: " + usuario.getNickname() + "\n" +
+                                    "Contraseña: " + usuario.getPassword());
+                    return "Correo Enviado";
+                }
+                return "Este Fono ya existe";
             }
             return "Este Correo ya existe";
         }
         return "Este Nickname ya existe";
-
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/usuarios")
