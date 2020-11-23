@@ -12,8 +12,9 @@ public class MascotasDTO {
     private int edad;
     private String requisitos;
     private Date fechaDePublicacion;
+    private char sexo;
 
-    public MascotasDTO(int idMascota, String nombre, int cuidador, String especie, String raza, int edad, String requisitos, Date fechaDePublicacion) {
+    public MascotasDTO(int idMascota, String nombre, int cuidador, String especie, String raza, int edad, String requisitos, Date fechaDePublicacion, char sexo) {
         this.idMascota = idMascota;
         this.nombre = nombre;
         this.cuidador = cuidador;
@@ -22,6 +23,7 @@ public class MascotasDTO {
         this.edad = edad;
         this.requisitos = requisitos;
         this.fechaDePublicacion = fechaDePublicacion;
+        this.sexo = sexo;
     }
 
     public int getIdMascota() {
@@ -88,6 +90,14 @@ public class MascotasDTO {
         this.fechaDePublicacion = fechaDePublicacion;
     }
 
+    public char getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(char sexo) {
+        this.sexo = sexo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,16 +106,17 @@ public class MascotasDTO {
         return idMascota == that.idMascota &&
                 cuidador == that.cuidador &&
                 edad == that.edad &&
-                nombre.equals(that.nombre) &&
-                especie.equals(that.especie) &&
-                raza.equals(that.raza) &&
-                requisitos.equals(that.requisitos) &&
-                fechaDePublicacion.equals(that.fechaDePublicacion);
+                sexo == that.sexo &&
+                Objects.equals(nombre, that.nombre) &&
+                Objects.equals(especie, that.especie) &&
+                Objects.equals(raza, that.raza) &&
+                Objects.equals(requisitos, that.requisitos) &&
+                Objects.equals(fechaDePublicacion, that.fechaDePublicacion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMascota, nombre, cuidador, especie, raza, edad, requisitos, fechaDePublicacion);
+        return Objects.hash(idMascota, nombre, cuidador, especie, raza, edad, requisitos, fechaDePublicacion, sexo);
     }
 
     @Override
@@ -119,6 +130,7 @@ public class MascotasDTO {
                 ", edad=" + edad +
                 ", requisitos='" + requisitos + '\'' +
                 ", fechaDePublicacion=" + fechaDePublicacion +
+                ", sexo=" + sexo +
                 '}';
     }
 }

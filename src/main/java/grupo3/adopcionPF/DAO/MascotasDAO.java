@@ -2,7 +2,6 @@ package grupo3.adopcionPF.DAO;
 
 import grupo3.adopcionPF.Conexion.connectionManager;
 import grupo3.adopcionPF.DTO.MascotasDTO;
-import grupo3.adopcionPF.DTO.UsuarioDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,8 +24,8 @@ public class MascotasDAO {
     }
 
     public void agregarMascota(MascotasDTO mascota) throws SQLException {
-        sql = "INSERT INTO grupo3_mascotas(nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion) " +
-                "VALUES(?,?,?,?,?,?,?)";
+        sql = "INSERT INTO grupo3_mascotas(nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo) " +
+                "VALUES(?,?,?,?,?,?,?,?)";
         ps = Conn.prepareStatement(sql);
         ps.setString(1,mascota.getNombre());
         ps.setInt(2,mascota.getCuidador());
@@ -35,11 +34,12 @@ public class MascotasDAO {
         ps.setInt(5,mascota.getEdad());
         ps.setString(6,mascota.getRequisitos());
         ps.setDate(7,mascota.getFechaDePublicacion());
+        ps.setString(8,String.valueOf(mascota.getSexo()));
         ps.execute();
     }
 
     public List<MascotasDTO> obtenerListaMascotas() throws SQLException {
-        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion " +
+        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo " +
                 "FROM grupo3_mascotas";
         ps = Conn.prepareStatement(sql);
         rs = ps.executeQuery();
@@ -52,7 +52,8 @@ public class MascotasDAO {
                         rs.getString("raza"),
                         rs.getInt("edad"),
                         rs.getString("requisitos"),
-                        rs.getDate("fecha_de_publicacion"));
+                        rs.getDate("fecha_de_publicacion"),
+                        rs.getString("sexo").charAt(0));
                 listaMascotas.add(nuevoMascota);
             } while (rs.next());
         }
@@ -60,7 +61,7 @@ public class MascotasDAO {
     }
 
     public MascotasDTO obtenerMascotasPorId(int id) throws SQLException {
-        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion " +
+        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo " +
                 "FROM grupo3_mascotas " +
                 "WHERE id = ?";
         ps = Conn.prepareStatement(sql);
@@ -74,13 +75,14 @@ public class MascotasDAO {
                     rs.getString("raza"),
                     rs.getInt("edad"),
                     rs.getString("requisitos"),
-                    rs.getDate("fecha_de_publicacion"));
+                    rs.getDate("fecha_de_publicacion"),
+                    rs.getString("sexo").charAt(0));
         }
         return nuevoMascota;
     }
 
     public List<MascotasDTO> obtenerMascotasPorCuidador(int cuidador) throws SQLException {
-        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion " +
+        sql = "SELECT id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo " +
                 "FROM grupo3_mascotas " +
                 "WHERE cuidador = ?";
         ps = Conn.prepareStatement(sql);
@@ -95,7 +97,8 @@ public class MascotasDAO {
                         rs.getString("raza"),
                         rs.getInt("edad"),
                         rs.getString("requisitos"),
-                        rs.getDate("fecha_de_publicacion"));
+                        rs.getDate("fecha_de_publicacion"),
+                        rs.getString("sexo").charAt(0));
                 listaMascotas.add(nuevoMascota);
             } while (rs.next());
         }
@@ -104,7 +107,7 @@ public class MascotasDAO {
 
     public void actualizarMascotas(MascotasDTO mascota,int id) throws SQLException {
         sql = "UPDATE grupo3_mascotas " +
-                "SET nombres=?,cuidador=?,especies=?,raza=?,edad=?,requisitos=?,fecha_de_publicacion=? " +
+                "SET nombres=?,cuidador=?,especies=?,raza=?,edad=?,requisitos=?,fecha_de_publicacion=?,sexo=? " +
                 "WHERE id = ?";
         ps = Conn.prepareStatement(sql);
         ps.setString(1,mascota.getNombre());
@@ -114,7 +117,8 @@ public class MascotasDAO {
         ps.setInt(5,mascota.getEdad());
         ps.setString(6,mascota.getRequisitos());
         ps.setDate(7,mascota.getFechaDePublicacion());
-        ps.setInt(8,id);
+        ps.setString(8,String.valueOf(mascota.getSexo()));
+        ps.setInt(9,id);
         ps.execute();
     }
 
