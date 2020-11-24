@@ -13,8 +13,9 @@ public class MascotasDTO {
     private String requisitos;
     private Date fechaDePublicacion;
     private char sexo;
+    private String infoAdicional;
 
-    public MascotasDTO(int idMascota, String nombre, int cuidador, String especie, String raza, int edad, String requisitos, Date fechaDePublicacion, char sexo) {
+    public MascotasDTO(int idMascota, String nombre, int cuidador, String especie, String raza, int edad, String requisitos, Date fechaDePublicacion, char sexo, String infoAdicional) {
         this.idMascota = idMascota;
         this.nombre = nombre;
         this.cuidador = cuidador;
@@ -24,6 +25,7 @@ public class MascotasDTO {
         this.requisitos = requisitos;
         this.fechaDePublicacion = fechaDePublicacion;
         this.sexo = sexo;
+        this.infoAdicional = infoAdicional;
     }
 
     public int getIdMascota() {
@@ -98,6 +100,14 @@ public class MascotasDTO {
         this.sexo = sexo;
     }
 
+    public String getInfoAdicional() {
+        return infoAdicional;
+    }
+
+    public void setInfoAdicional(String infoAdicional) {
+        this.infoAdicional = infoAdicional;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -111,12 +121,13 @@ public class MascotasDTO {
                 Objects.equals(especie, that.especie) &&
                 Objects.equals(raza, that.raza) &&
                 Objects.equals(requisitos, that.requisitos) &&
-                Objects.equals(fechaDePublicacion, that.fechaDePublicacion);
+                Objects.equals(fechaDePublicacion, that.fechaDePublicacion) &&
+                Objects.equals(infoAdicional, that.infoAdicional);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idMascota, nombre, cuidador, especie, raza, edad, requisitos, fechaDePublicacion, sexo);
+        return Objects.hash(idMascota, nombre, cuidador, especie, raza, edad, requisitos, fechaDePublicacion, sexo, infoAdicional);
     }
 
     @Override
@@ -131,6 +142,7 @@ public class MascotasDTO {
                 ", requisitos='" + requisitos + '\'' +
                 ", fechaDePublicacion=" + fechaDePublicacion +
                 ", sexo=" + sexo +
+                ", infoAdicional='" + infoAdicional + '\'' +
                 '}';
     }
 }

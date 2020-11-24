@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class MascotasAPI {
 
     @RequestMapping(method = RequestMethod.POST,value = "/mascotas")
@@ -41,4 +42,8 @@ public class MascotasAPI {
         new MascotasDAO().eliminarMascota(id);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/mascotas/filtrada={usuario}")
+    public List<MascotasDTO> ListaMascotasFiltrada(@PathVariable(name = "usuario") int usuario) throws SQLException {
+        return new MascotasDAO().ListaMascotasFiltrada(usuario);
+    }
 }
