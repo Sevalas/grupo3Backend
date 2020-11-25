@@ -136,12 +136,13 @@ public class MascotasDAO {
     }
 
     public List<MascotasDTO> ListaMascotasFiltrada(int usuario)throws SQLException {
-        sql = "SELECT grupo3_mascotas.id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo,info_adicional,usuario " +
+        sql = "SELECT DISTINCT usuario,grupo3_mascotas.id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo,info_adicional " +
                 "FROM grupo3_mascotas " +
-                "LEFT OUTER JOIN grupo3_postulaciones " +
+                "LEFT JOIN grupo3_postulaciones " +
                 "ON grupo3_postulaciones.mascota = grupo3_mascotas.id " +
                 "WHERE grupo3_postulaciones.usuario IS DISTINCT FROM ? " +
-                "AND grupo3_mascotas.cuidador IS DISTINCT FROM ?";
+                "AND grupo3_mascotas.cuidador IS DISTINCT FROM ? " +
+                "ORDER BY id asc";
 
         ps = Conn.prepareStatement(sql);
         ps.setInt(1, usuario);

@@ -64,7 +64,8 @@ public class FotosMascotasDAO {
     public List<FotosMascotasDTO> obtenerListaPorMascota(int idMascota) throws SQLException {
         sql = "SELECT id,mascota,foto " +
                 "FROM grupo3_fotos_mascotas " +
-                "WHERE mascota = ?";
+                "WHERE mascota = ? " +
+                "ORDER BY mascota desc";
         ps = Conn.prepareStatement(sql);
         ps.setInt(1, idMascota);
         rs = ps.executeQuery();
@@ -75,6 +76,8 @@ public class FotosMascotasDAO {
                     rs.getString("foto"));
             listaFotoMascota.add(nuevaFotoMascota);
             } while (rs.next());
+        }else {
+            listaFotoMascota.add(new FotosMascotasDTO(0,0,""));
         }
         return listaFotoMascota;
     }

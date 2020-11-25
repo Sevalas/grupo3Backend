@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FotosMascotaAPI {
 
     @RequestMapping(method = RequestMethod.POST,value = "/fotos_mascota")
