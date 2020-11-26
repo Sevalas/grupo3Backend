@@ -54,4 +54,9 @@ public class PostulacionesAPI {
         new PostulacionesDAO().eliminarFotoMascota(id);
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/postulaciones/filtrada={usuario}")
+    public List<PostulacionesDTO> obtenerListaPostulacionesFiltrada(@PathVariable(name = "usuario") int usuario) throws SQLException {
+        return new PostulacionesDAO().obtenerListaPostulacionesFiltrada(usuario);
+    }
+
 }

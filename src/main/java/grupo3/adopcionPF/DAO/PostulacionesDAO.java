@@ -56,6 +56,31 @@ public class PostulacionesDAO {
         return listaPostulaciones;
     }
 
+    public List<PostulacionesDTO> obtenerListaPostulacionesFiltrada(int usuario) throws SQLException {
+        sql = "SELECT grupo3_postulaciones.id, usuario, pregunta1, pregunta2, descripcion, foto_ref_url, mascota, estado " +
+                "FROM grupo3_mascotas, grupo3_postulaciones " +
+                "WHERE cuidador = ? " +
+                "AND grupo3_mascotas.id = mascota " +
+                "AND estado IS NULL";
+        ps = Conn.prepareStatement(sql);
+        ps.setInt(1,usuario);
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            do {
+                nuevaPostulacion = new PostulacionesDTO(rs.getInt("id"),
+                        rs.getInt("usuario"),
+                        rs.getString("pregunta1"),
+                        rs.getString("pregunta2"),
+                        rs.getString("descripcion"),
+                        rs.getString("foto_ref_url"),
+                        rs.getInt("mascota"),
+                        rs.getString("estado"));
+                listaPostulaciones.add(nuevaPostulacion);
+            } while (rs.next());
+        }
+        return listaPostulaciones;
+    }
+
     public PostulacionesDTO obtenerPostulacionPorId(int id) throws SQLException {
         sql = "SELECT id,usuario,pregunta1,pregunta2,descripcion,foto_ref_url,mascota,estado " +
                 "FROM grupo3_postulaciones " +
