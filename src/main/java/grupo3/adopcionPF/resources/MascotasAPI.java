@@ -13,8 +13,8 @@ import java.util.List;
 public class MascotasAPI {
 
     @RequestMapping(method = RequestMethod.POST,value = "/mascotas")
-    public void agregarMascota(@ModelAttribute MascotasDTO mascota) throws SQLException{
-        new MascotasDAO().agregarMascota(mascota);
+    public int agregarMascota(@RequestBody MascotasDTO mascota) throws SQLException{
+        return new  MascotasDAO().agregarMascota(mascota).getIdMascota();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/mascotas")

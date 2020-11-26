@@ -23,9 +23,10 @@ public class MascotasDAO {
         Conn = connectionManager.obtenerConexion();
     }
 
-    public void agregarMascota(MascotasDTO mascota) throws SQLException {
+    public MascotasDTO agregarMascota(MascotasDTO mascota) throws SQLException {
         sql = "INSERT INTO grupo3_mascotas(nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo,info_adicional) " +
-                "VALUES(?,?,?,?,?,?,?,?,?)";
+                "VALUES(?,?,?,?,?,?,?,?,?) " +
+                "RETURNING id,nombres,cuidador,especies,raza,edad,requisitos,fecha_de_publicacion,sexo,info_adicional";
         ps = Conn.prepareStatement(sql);
         ps.setString(1,mascota.getNombre());
         ps.setInt(2,mascota.getCuidador());
@@ -36,7 +37,20 @@ public class MascotasDAO {
         ps.setDate(7,mascota.getFechaDePublicacion());
         ps.setString(8,String.valueOf(mascota.getSexo()));
         ps.setString(9,mascota.getInfoAdicional());
-        ps.execute();
+        rs = ps.executeQuery();
+        if (rs.next()) {
+            nuevoMascota= new MascotasDTO(rs.getInt("id"),
+                    rs.getString("nombres"),
+                    rs.getInt("cuidador"),
+                    rs.getString("especies"),
+                    rs.getString("raza"),
+                    rs.getInt("edad"),
+                    rs.getString("requisitos"),
+                    rs.getDate("fecha_de_publicacion"),
+                    rs.getString("sexo").charAt(0),
+                    rs.getString("info_adicional"));
+        }
+        return nuevoMascota;
     }
 
     public List<MascotasDTO> obtenerListaMascotas() throws SQLException {
@@ -140,7 +154,7 @@ public class MascotasDAO {
                 "FROM grupo3_mascotas " +
                 "LEFT JOIN grupo3_postulaciones " +
                 "ON grupo3_postulaciones.mascota = grupo3_mascotas.id " +
-                "WHERE grupo3_postulaciones.usuario IS DISTINCT FROM ? " +
+                "WHERE grupo3_postulaciones.usuario IS DISTINCT FROM ?   " +
                 "AND grupo3_mascotas.cuidador IS DISTINCT FROM ? " +
                 "ORDER BY id asc";
 
