@@ -1,10 +1,16 @@
 package grupo3.adopcionPF.resources;
 
+import grupo3.adopcionPF.DAO.MascotasDAO;
 import grupo3.adopcionPF.DAO.PostulacionesDAO;
+import grupo3.adopcionPF.DAO.UsuarioDAO;
+import grupo3.adopcionPF.DTO.MascotasDTO;
 import grupo3.adopcionPF.DTO.PostulacionesDTO;
+import grupo3.adopcionPF.DTO.UsuarioDTO;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -44,9 +50,35 @@ public class PostulacionesAPI {
         new PostulacionesDAO().actualizarPostulacion(postulacion,new imgbbAPI().ImgToUrl(imagen),id);
     }
 
-    @RequestMapping(method = RequestMethod.PUT,value = "/postulaciones/{id}_estado={estado}")
-    public void actualizarEstado(@PathVariable("id") int id, @PathVariable("estado") boolean estado) throws SQLException, IOException {
+    @RequestMapping(method = RequestMethod.PUT,value = "/postulaciones/{id}_estado={estado}_cuidador={cuidador}_postulante={postulante}")
+    public void actualizarEstado(@PathVariable("id") int id, @PathVariable("estado") boolean estado,@PathVariable("cuidador") int idCuidador,@PathVariable("postulante") int idPostulante) throws SQLException, IOException, AddressException {
         new PostulacionesDAO().actualizarEstado(estado,id);
+        if(estado==true){
+            UsuarioDTO cuidador = new UsuarioDAO().obtenerUsuariosPorId(idCuidador);
+            UsuarioDTO postulante = new UsuarioDAO().obtenerUsuariosPorId(idPostulante);
+            PostulacionesDTO postulacion = new PostulacionesDAO().obtenerPostulacionPorId(id);
+            MascotasDTO mascota = new MascotasDAO().obtenerMascotasPorId(postulacion.getMascota());
+            new mailApi().enviarConGMail(new InternetAddress(cuidador.getEmail()),
+                    "Has aceptado una solicitud de "+mascota.getNombre(),
+                    "Hola "+cuidador.getNickname()+", recientemente aceptaste una solicitud de adopcion que realizo el usuario "+postulante.getNickname()+" para "+mascota.getNombre()+"\n"+
+                            "   -Datos de "+postulante.getNickname()+"-\n" +
+                            "- Nombre: "+postulante.getNombres()+":\n" +
+                            "- Apellido: "+postulante.getApellidos()+":\n" +
+                            "- Email: "+postulante.getEmail()+":\n" +
+                            "- Fono: "+postulante.getFono()+":\n" +
+                            "- Región: "+postulante.getRegion()+":\n" +
+                            "- Comuna: "+postulante.getComuna()+":\n");
+            new mailApi().enviarConGMail(new InternetAddress(postulante.getEmail()),
+                    "Ha sido aceptada tu solicitud de "+mascota.getNombre(),
+                    "Hola "+postulante.getNickname()+", recientemente "+cuidador.getNickname()+" ha aceptado la solicitud de adopcion que realizaste para "+mascota.getNombre()+"\n"+
+                            "   -Datos de "+cuidador.getNickname()+"-\n" +
+                            "- Nombre: "+cuidador.getNombres()+":\n" +
+                            "- Apellido: "+cuidador.getApellidos()+":\n" +
+                            "- Email: "+cuidador.getEmail()+":\n" +
+                            "- Fono: "+cuidador.getFono()+":\n" +
+                            "- Región: "+cuidador.getRegion()+":\n" +
+                            "- Comuna: "+cuidador.getComuna()+":\n");
+        }
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/postulaciones/eliminar={id}")
