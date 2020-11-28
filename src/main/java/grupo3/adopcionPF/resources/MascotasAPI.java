@@ -33,7 +33,7 @@ public class MascotasAPI {
     }
 
     @RequestMapping(method = RequestMethod.PUT,value = "/mascotas/actualizar={id}")
-    public void actualizarMascota(@PathVariable("id") int id, @ModelAttribute MascotasDTO mascota) throws SQLException{
+    public void actualizarMascota(@PathVariable("id") int id, @RequestBody MascotasDTO mascota) throws SQLException{
         new MascotasDAO().actualizarMascotas(mascota,id);
     }
 
