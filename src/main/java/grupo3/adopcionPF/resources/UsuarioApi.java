@@ -61,12 +61,6 @@ public class UsuarioApi {
         return new UsuarioDAO().obtenerUsuariosPorEmail(email);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/usuarios/actualizar={id}")
-    public void actualizarUsuario(@PathVariable("id") int id, @ModelAttribute UsuarioDTO usuario,
-                                  @RequestPart MultipartFile imagen) throws SQLException, IOException {
-        new UsuarioDAO().actualizarUsuario(usuario, new imgbbAPI().ImgToUrl(imagen), id);
-    }
-
     @RequestMapping(method = RequestMethod.DELETE, value = "/usuarios/eliminar={id}")
     public void eliminarUsuario(@PathVariable(name = "id") int id) throws SQLException {
         new UsuarioDAO().eliminarUsuario(id);
@@ -84,5 +78,36 @@ public class UsuarioApi {
             return true;
         }
         return false;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/usuarios/foto={id}")
+    public String obtenerFotoUsuario(@PathVariable(name = "id") int id) throws SQLException {
+        return new UsuarioDAO().obtenerFotoUsuario(id);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/usuarios/actualizar={id}")
+    public String actualizarUsuario(@PathVariable("id") int id, @ModelAttribute UsuarioDTO usuario,
+                                  @RequestPart MultipartFile imagen) throws SQLException, IOException, AddressException {
+        if (new UsuarioDAO().obtenerUsuariosPorNicknameExceptId(usuario.getNickname(),id) == null) {
+            if (new UsuarioDAO().obtenerUsuariosPorEmailExceptId(usuario.getEmail(),id) == null) {
+                if (new UsuarioDAO().obtenerUsuariosPorFonoExceptId(usuario.getFono(),id) == null) {
+                    if(usuario.getFotoPerfilUrl().isEmpty()) {
+                        new UsuarioDAO().actualizarUsuario(usuario, new imgbbAPI().ImgToUrl(imagen), id);
+                    }
+                    else{
+                        new UsuarioDAO().actualizarUsuario(usuario, usuario.getFotoPerfilUrl(), id);
+                    }
+                    new mailApi().enviarConGMail(new InternetAddress(usuario.getEmail()),
+                            "Se ha actualizado tu información de PetAdopt",
+                            "Hola " + usuario.getNickname() + " Actualmente tus credenciales de inicio de sesión son:\n" +
+                                    "Usuario: " + usuario.getNickname() + "\n" +
+                                    "Contraseña: " + usuario.getPassword());
+                    return "Correo Enviado";
+                }
+                return "Este Fono ya existe";
+            }
+            return "Este Correo ya existe";
+        }
+        return "Este Nickname ya existe";
     }
 }
